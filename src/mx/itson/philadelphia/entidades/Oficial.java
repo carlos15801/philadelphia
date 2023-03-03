@@ -6,7 +6,7 @@ package mx.itson.philadelphia.entidades;
 
 /**
  *
- * @author jesus
+ * @author Carlos
  */
 public class Oficial {
     private int id;

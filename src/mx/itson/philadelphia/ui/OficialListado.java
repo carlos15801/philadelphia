@@ -4,23 +4,20 @@
  */
 package mx.itson.philadelphia.ui;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
-import mx.itson.philadelphia.entidades.Conductor;
-import mx.itson.philadelphia.persistencia.ConductorDAO;
-
+import mx.itson.philadelphia.entidades.Oficial;
+import mx.itson.philadelphia.persistencia.OficialDAO;
 /**
  *
  * @author Carlos
  */
-public class ConductorListado extends javax.swing.JFrame {
+public class OficialListado extends javax.swing.JFrame {
 
     /**
-     * Creates new form ConductorListado
+     * Creates new form OficialListado
      */
-    public ConductorListado() {
+    public OficialListado() {
         initComponents();
     }
 
@@ -34,7 +31,7 @@ public class ConductorListado extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblConductores = new javax.swing.JTable();
+        tblOficial = new javax.swing.JTable();
         btnAgregar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnEliminar = new javax.swing.JButton();
@@ -46,18 +43,18 @@ public class ConductorListado extends javax.swing.JFrame {
             }
         });
 
-        tblConductores.setModel(new javax.swing.table.DefaultTableModel(
+        tblOficial.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Id", "Nombre", "Número de licencia", "Fecha de alta"
+                "Id", "Nombre", "Telefono"
             }
         ));
-        jScrollPane1.setViewportView(tblConductores);
+        jScrollPane1.setViewportView(tblOficial);
 
         btnAgregar.setText("Agregar");
         btnAgregar.addActionListener(new java.awt.event.ActionListener() {
@@ -74,40 +71,35 @@ public class ConductorListado extends javax.swing.JFrame {
         });
 
         btnEliminar.setText("Eliminar");
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnAgregar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEditar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnEliminar))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 604, Short.MAX_VALUE))
-                .addGap(20, 20, 20))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 722, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(24, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnAgregar)
+                .addGap(28, 28, 28)
+                .addComponent(btnEditar)
+                .addGap(35, 35, 35)
+                .addComponent(btnEliminar)
+                .addGap(41, 41, 41))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAgregar)
                     .addComponent(btnEditar)
                     .addComponent(btnEliminar))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 216, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 237, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(53, 53, 53))
         );
 
         pack();
@@ -115,53 +107,26 @@ public class ConductorListado extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         cargar();
-        // Se oculta la primera columna (índice 0) que corresponde al id para que el usuario no la vea, pero nosotros sí la necesitamos
-        tblConductores.removeColumn(tblConductores.getColumnModel().getColumn(0));
     }//GEN-LAST:event_formWindowOpened
 
-    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-       // Se le pasa como parámetro id del constructor el valor 0 ya que es un registro nuevo
-       ConductorFormulario formulario = new ConductorFormulario(this, true, 0);
-       formulario.setVisible(true);
-        
-       cargar();
-    }//GEN-LAST:event_btnAgregarActionPerformed
-
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // Se obtiene el valor del id de condcutor de la tabla
-        int renglon = tblConductores.getSelectedRow();
-        String id = tblConductores.getModel().getValueAt(renglon, 0).toString();
+        int renglon = tblOficial.getSelectedRow();
+        String id = tblOficial.getModel().getValueAt(renglon, 0).toString();
         
         // Se abre el formulario y se le pasa el id como parámetro
-        ConductorFormulario formulario = new ConductorFormulario(this, true, Integer.parseInt(id));
+        OficialFormulario formulario = new OficialFormulario(this, true, Integer.parseInt(id));
         formulario.setVisible(true);
         
         cargar();
     }//GEN-LAST:event_btnEditarActionPerformed
 
-    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-        // Mostrar una confirmación al usuario preguntano si está seguro que desea eliminar.
-        // Si confirma, se elimina el registro y se actualiza la tabla.
-    }//GEN-LAST:event_btnEliminarActionPerformed
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        OficialFormulario formulario = new OficialFormulario(this, true, 0);
+       formulario.setVisible(true);
+        
+       cargar();
+    }//GEN-LAST:event_btnAgregarActionPerformed
 
-    /**
-     * Se carga la tabla con los datos esperados
-     */
-   public void cargar(){ 
-        List<Conductor> conductores =  ConductorDAO.obtenerTodos();
-        DefaultTableModel modeloTabla = (DefaultTableModel)tblConductores.getModel();
-        modeloTabla.setRowCount(0);
-        DateFormat formatoFecha =  new SimpleDateFormat("d 'de' MMMM 'de' yyyy");
-        for(Conductor c : conductores){
-            modeloTabla.addRow(new Object[] {
-                c.getId(),
-                c.getNombre(),
-                c.getNumeroLicencia(),
-                formatoFecha.format(c.getFechaAlta())
-            });
-        }
-    }
-   
     /**
      * @param args the command line arguments
      */
@@ -179,29 +144,45 @@ public class ConductorListado extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ConductorListado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OficialListado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ConductorListado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OficialListado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ConductorListado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OficialListado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ConductorListado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(OficialListado.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ConductorListado().setVisible(true);
+                new OficialListado().setVisible(true);
             }
         });
     }
 
+    public void cargar(){
+        List<Oficial> oficiales =  OficialDAO.obtenerTodos();
+        DefaultTableModel modeloTabla = (DefaultTableModel)tblOficial.getModel();
+        modeloTabla.setRowCount(0);
+        for(Oficial o : oficiales){
+            modeloTabla.addRow(new Object[] {
+                o.getId(),
+                o.getNombre(),
+                o.getTelefono(),
+            });
+        }
+    }
+    
+    
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblConductores;
+    private javax.swing.JTable tblOficial;
     // End of variables declaration//GEN-END:variables
 }

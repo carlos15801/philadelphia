@@ -9,7 +9,7 @@ import mx.itson.philadelphia.persistencia.ConductorDAO;
 
 /**
  *
- * @author jesus
+ * @author Carlos
  */
 public class Main {
     

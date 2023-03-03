@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  *
- * @author jesus
+ * @author Carlos
  */
 public class Multa {
    private int id;

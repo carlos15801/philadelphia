@@ -16,7 +16,7 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author jesus
+ * @author Carlos
  */
 @Entity
 //Esto es configuración
